@@ -1,4 +1,4 @@
-/vendor
+/vendor/
 *.phar
 .gitignore
-/.idea
+/.idea/
