@@ -1,4 +1,5 @@
-/vendor/
+vendor/
 *.phar
 .gitignore
-/.idea/
+.idea/
+/node_modules
