@@ -7,5 +7,10 @@
  */
 
 class Customer extends ActiveRecord {
-    
+    protected static  $table = 'userdb';
+
+    protected static  $field = array(
+        'id'=>'int',
+        'name' => 'varchar',
+    );
 }
