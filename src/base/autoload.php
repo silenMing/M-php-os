@@ -9,8 +9,7 @@
 class ClassLoader{
 
 	protected static $_aliases = array();
-
-
+    
 	/**
 	 * Add the aliases to ClassLoader
 	 *
