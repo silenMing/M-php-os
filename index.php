@@ -6,4 +6,4 @@
  * Time: 22:59
  */
 
-require __DIR__.'/../src/autoload.php';
+require __DIR__.'/src/autoload.php';
