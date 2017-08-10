@@ -180,14 +180,14 @@ class base_events_dispatcher{
         return last($this->firing);
     }
 
-//    private function __preInitEvents($eventName)
-//    {
-//        if( $this->initEvents )
-//        {
-//            $EventService = kernel::single('base_events_service');
-//            $EventService->setListens($eventName)->boot();
-//        }
-//    }
+    private function __preInitEvents($eventName)
+    {
+        if( $this->initEvents )
+        {
+            $EventService = new base_events_service;
+            $EventService->setListens($eventName)->boot();
+        }
+    }
 
     /**
      * Get all of the listeners for a given event name.
@@ -203,5 +203,44 @@ class base_events_dispatcher{
         }
 
         return $this->sorted[$eventName];
+    }
+
+    /**
+     * 执行异步事件任务
+     *
+     * @param $eventName 事件名称
+     * @param $params 事件参数
+     * @param $asyncListeners 事件的异步listener
+     */
+    private function __fireAsync($eventName, $params, $asyncListeners)
+    {
+        if( empty($asyncListeners) ) return true;
+
+        $queueParams['eventParams'] = $params;
+        $queueParams['eventName'] = $eventName;
+
+        //执行异步listeners , 将异步listeners加入到队列
+        if( count($asyncListeners) == 1 )
+        {
+            $listener = current($asyncListeners);
+            $queueParams['listener'] = $listener;
+            system_queue::instance()->publish($this->queues[$listener], $this->queues[$listener], $queueParams);
+        }
+        else
+        {
+            $queueParams['listeners'] = $asyncListeners;
+            $queueParams['queues'] = $this->queues;
+            system_queue::instance()->publish('system_tasks_distrEvents', 'system_tasks_distrEvents', $queueParams);
+        }
+
+        return true;
+    }
+
+    /**
+     * 是否需要初始化事件任务
+     */
+    public function isInitEvents($init=true)
+    {
+        return $this->initEvents = $init;
     }
 }

@@ -11,11 +11,18 @@ class base_events_service {
      *
      * @var array
      */
-	
-	function __construct()
-	{
-		# code...
-	}
+    protected $listen = [];
+
+    public function setListens($eventName)
+    {
+        if( $eventName )
+        {
+            $listen = config::get('events.listen');
+            $this->listen[$eventName] = $listen[$eventName];
+        }
+
+        return $this;
+    }
 
 	
 }
