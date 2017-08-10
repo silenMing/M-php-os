@@ -243,4 +243,34 @@ class base_events_dispatcher{
     {
         return $this->initEvents = $init;
     }
+
+    /**
+     * Sort the listeners for a given event by priority.
+     *
+     * @param  string  $eventName
+     * @return array
+     */
+    protected function sortListeners($eventName)
+    {
+        $this->sorted[$eventName] = [];
+
+        if (isset($this->listeners[$eventName]))
+        {
+            foreach( ['sync', 'async'] as $type )
+            {
+                $this->__preSortListeners($eventName, $type);
+            }
+        }
+    }
+
+    private function __preSortListeners($eventName, $type)
+    {
+        if( $this->listeners[$eventName][$type] )
+        {
+            krsort($this->listeners[$eventName][$type]);
+            $this->sorted[$eventName][$type] = call_user_func_array(
+                'array_merge', $this->listeners[$eventName][$type]
+            );
+        }
+    }
 }
