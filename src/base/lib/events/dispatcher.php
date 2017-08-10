@@ -117,4 +117,91 @@ class base_events_dispatcher{
             );
         };
     }
+
+    /**
+     * Fire an event and call the listeners.
+     *
+     * @param  string|object  $eventName
+     * @param  array $params
+     * @param  bool  $halt
+     * @return array|null
+     */
+    public function fire($eventName, $params, $halt = false)
+    {
+        $this->__preInitEvents($eventName);
+
+        $responses = [];
+
+        $this->firing[] = $eventName;
+
+        if( ! is_array( $params ) )
+        {
+            $params = [$params];
+        }
+
+        $listeners = $this->getListeners($eventName);
+
+        //执行同步listeners
+        foreach ($listeners['sync'] as $key=>$listener)
+        {
+            $response = call_user_func_array($listener, $params );
+
+            if (! is_null($response) && $halt)
+            {
+                array_pop($this->firing);
+                return $response;
+            }
+
+            if ($response === false)
+            {
+                break;
+            }
+
+            $responses[] = $response;
+        }
+
+        $this->__fireAsync($eventName, $params, $listeners['async']);
+
+        array_pop($this->firing);
+
+        //执行完一个事件后，重置需要初始化
+        $this->isInitEvents(true);
+
+        return $responses;
+    }
+
+    /**
+     * Get the event that is currently firing.
+     *
+     * @return string
+     */
+    public function firing()
+    {
+        return last($this->firing);
+    }
+
+//    private function __preInitEvents($eventName)
+//    {
+//        if( $this->initEvents )
+//        {
+//            $EventService = kernel::single('base_events_service');
+//            $EventService->setListens($eventName)->boot();
+//        }
+//    }
+
+    /**
+     * Get all of the listeners for a given event name.
+     *
+     * @param  string  $eventName
+     * @return array
+     */
+    public function getListeners($eventName)
+    {
+        if (! isset($this->sorted[$eventName]))
+        {
+            $this->sortListeners($eventName);
+        }
+
+        return $this->sorted[$eventName];
+    }
 }
