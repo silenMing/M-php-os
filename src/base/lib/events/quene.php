@@ -16,6 +16,29 @@ class events_quene{
             self::$__config['action']   = (array)config::get('queue.action', array());
         }
     }
+    public function __construct()
+    {
+        self::__init();
+        $controller = self::get_driver_name();
+        $this->set_controller(new $controller);
+    }
+
+    static public function get_driver_name()
+    {
+        return config::get('queue.default', 'system_queue_adapter_redis');
+    }
+
+    public function set_controller($controller)
+    {
+        if ($controller instanceof base_events_dispatcher)
+        {
+            $this->__controller = $controller;
+        }
+        else
+        {
+            throw new Exception('this instance must implements base_events_dispatcher');
+        }
+    }
 
     /**
      *实例化，解耦
