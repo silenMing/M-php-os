@@ -16,8 +16,8 @@ return [
         //第三个参数为执行任务的优先级，数值越大则越先执行，相同等级则按照顺序执行 默认为0
         //指定参数 queue 对应为该任务异步执行的队列 默认为system_tasks_events
         'test' => [
-            ['system_events_listeners_testSync', 'sync'],
-            ['system_events_listeners_testAsync@test', 'async'],
+            ['testSync', 'sync'],
+            ['testAsync@test', 'async'],
         ],
     ]
 ];
