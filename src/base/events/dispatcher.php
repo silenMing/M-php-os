@@ -230,7 +230,7 @@ class base_events_dispatcher{
         {
             $queueParams['listeners'] = $asyncListeners;
             $queueParams['queues'] = $this->queues;
-            events_quene::instance()->publish('system_tasks_distrEvents', 'system_tasks_distrEvents', $queueParams);
+            events_quene::instance()->publish('base_events_distrEvents', 'base_events_distrEvents', $queueParams);
         }
 
         return true;
