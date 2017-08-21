@@ -1,11 +1,24 @@
 {
+    "name": "facades/events/async",
+    "description": "async events for laravel",
+    "keywords": ["laravel", "events", "facade"],
+    "homepage": "https://github.com/silenMing/M-php-os",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "silen Ming",
+            "email": "silen_m@163.com",
+        }
+    ],
     "require": {
-        "symfony/http-foundation": "^3.2"
-        "aliyuncs/oss-sdk-php": "~2.0"
+        "aliyuncs/oss-sdk-php": "~2.0",
+        "php": ">=5.0.0"
     },
     "autoload": {
         "psr-4": {
-            "DesignPatterns\\": ""
-        }
+            "DesignPatterns\\": "",
+        },
+        "classmap": ["src/"]
     }
 }
