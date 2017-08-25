@@ -59,7 +59,7 @@ class base_events_dispatcher{
 
             if( $sync == 'async' && $this->__listenerIsSupportAsync($objClass) )
             {
-                $this->queues[$listener] = $queue ? $queue : 'system_tasks_events';
+                $this->queues[$listener] = $queue ? $queue : 'base_events_interface_task';
                 $this->listeners[$event]['async'][$priority][] = $listener;
             }
             else
