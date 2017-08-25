@@ -1,10 +1,5 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: zhangming
- * Date: 2017/8/14
- * Time: 17:12
- */
+
 /**
  * @see base_events_dispatcher
  */
