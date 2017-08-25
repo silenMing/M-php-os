@@ -16,9 +16,6 @@
         "php": ">=5.0.0"
     },
     "autoload": {
-        "psr-4": {
-            "DesignPatterns\\": "",
-        },
-        "classmap": ["src/"]
+        "files": ["src/autoload.php"]
     }
 }
