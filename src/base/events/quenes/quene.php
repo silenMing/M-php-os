@@ -1,5 +1,5 @@
 <?php
-class events_quene{
+class events_quenes_quene{
 
     static private $__instance = null;
 
@@ -25,7 +25,7 @@ class events_quene{
 
     static public function get_driver_name()
     {
-        return config::get('queue.default', 'system_queue_adapter_redis');
+        return config::get('queue.default', 'system_queues_redis');
     }
 
     public function set_controller($controller)

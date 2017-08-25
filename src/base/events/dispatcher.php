@@ -224,13 +224,13 @@ class base_events_dispatcher{
         {
             $listener = current($asyncListeners);
             $queueParams['listener'] = $listener;
-            events_quene::instance()->publish($this->queues[$listener], $this->queues[$listener], $queueParams);
+            events_quenes_quene::instance()->publish($this->queues[$listener], $this->queues[$listener], $queueParams);
         }
         else
         {
             $queueParams['listeners'] = $asyncListeners;
             $queueParams['queues'] = $this->queues;
-            events_quene::instance()->publish('base_events_distrEvents', 'base_events_distrEvents', $queueParams);
+            events_quenes_quene::instance()->publish('base_events_distrEvents', 'base_events_distrEvents', $queueParams);
         }
 
         return true;

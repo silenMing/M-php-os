@@ -1,5 +1,5 @@
 <?php
-interface system_interface_adapter{
+interface events_interface_adapter{
 
     /**
      * publish新任务
