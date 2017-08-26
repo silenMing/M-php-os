@@ -30,7 +30,7 @@ class system_queues_redis implements events_interface_adapter{
      */
     public function pushRaw($payload, $queueName ){
         redis::scene('queue')->rpush($queueName, $payload);
-//        return Arr::get(json_decode($payload, true), 'id');
+        return Arr::get(json_decode($payload, true), 'id');
     }
 
     /**
