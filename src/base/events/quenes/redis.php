@@ -40,7 +40,10 @@ class system_queues_redis implements events_interface_adapter{
      * @return mixed 队列任务数据
      */
     public function get($queueName){
-
+        if (! is_null($this->expire) )
+        {
+            $this->migrateAllExpiredJobs($queueName);
+        }
     }
 
     /**
@@ -64,6 +67,40 @@ class system_queues_redis implements events_interface_adapter{
 
     public function is_end($queueName){
 
+    }
+
+    /**
+     * 将所有延时队列或者处理超时的队列重新加入到队列中
+     *
+     * @param  string  $queue
+     * @return void
+     */
+    protected function migrateAllExpiredJobs($queueName)
+    {
+        $this->migrateExpiredJobs($queueName.':delayed', $queueName);
+
+        $this->migrateExpiredJobs($queueName.':reserved', $queueName);
+    }
+
+    /**
+     * 将延时队列或者处理超时的队列重新加入到执行队列中
+     *
+     * @param  string  $from
+     * @param  string  $to
+     * @return void
+     */
+    public function migrateExpiredJobs($from, $to)
+    {
+        $from = $from;
+        $to = 'queue:'.$to;
+
+        $objectReids = redis::scene('queue');
+        $objectReids->loadScripts('queueMigrate');
+
+        $v = $objectReids->queueMigrate($from, $to, time());
+
+
+        return $v;
     }
 
 
