@@ -25,7 +25,7 @@ class events_quenes_quene{
 
     static public function get_driver_name()
     {
-        return config::get('queue.default', 'system_queues_redis');
+        return config::get('queue.default', 'base_redis_redis');
     }
 
     public function set_controller($controller)

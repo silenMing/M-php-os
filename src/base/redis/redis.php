@@ -1,6 +1,6 @@
 <?php
 
-class system_queues_redis implements events_interface_adapter{
+class base_redis_redis implements events_interface_adapter{
 
     /**
      * 创建执行队列的有效时间
@@ -44,6 +44,18 @@ class system_queues_redis implements events_interface_adapter{
         {
             $this->migrateAllExpiredJobs($queueName);
         }
+
+        $objectRedis = redis::scene('queue');
+        $objectRedis->loadScripts('queueGet');
+
+        $queueData = $objectRedis->queueGet($queueName, 'queue:'.$queueName.':reserved', time() + $this->expire);
+
+        if( ! empty($queueData) )
+        {
+            return new system_queue_message_redis($this, $queueData, $queueName);
+        }
+
+        return false;
     }
 
     /**
